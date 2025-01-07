@@ -96,3 +96,13 @@ You can use SVG icons manually by referencing them via the `<use>` element in yo
 <svg>
   <use href="#icon-socials-tg"></use>
 </svg>
+```
+
+
+## Contributing 🤝
+Contributions are welcome! Please submit an issue or a pull request on GitHub if you have suggestions or improvements.
+
+---
+
+## License 📜
+This plugin is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
