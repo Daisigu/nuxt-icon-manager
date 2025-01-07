@@ -21,21 +21,14 @@ export default defineNuxtModule<IconModuleOptions>({
   defaults: {
     iconsDir: 'assets/icons',
     componentName: 'VIcon',
-    validation: {
-      enabled: false,
-      rules: {
-        maxSize: 1024,
-        allowedElements: ['svg', 'path', 'pattern', 'circle'],
-      },
-    },
   },
   async setup(options, nuxt) {
     try {
       const { resolve } = createResolver(import.meta.url)
       const runtimeDir = resolve('./runtime')
 
-      validateStructure(nuxt.options.rootDir + '/' + options.iconsDir)
-      const { regenerate: regenerateSprite } = await generateSprite(nuxt, options)
+      validateStructure(resolve(nuxt.options.rootDir, options.iconsDir))
+      const { regenerate } = await generateSprite(nuxt, options)
 
       nuxt.options.alias['#icons'] = resolve(nuxt.options.buildDir, 'nuxt-icon-manager/icons')
       nuxt.options.build.transpile.push(runtimeDir)
@@ -61,7 +54,7 @@ export default defineNuxtModule<IconModuleOptions>({
           `,
       })
 
-      addComponent({
+      await addComponent({
         name: options.componentName,
         filePath: resolve(runtimeDir, 'components/VIcon.vue'),
       })
@@ -73,20 +66,19 @@ export default defineNuxtModule<IconModuleOptions>({
           persistent: true,
           ignoreInitial: true,
         })
-        const { regenerate } = await generateSprite(nuxt, options)
         const debouncedRegenerate = debounce(regenerate, 300)
         watcher
           .on('add', async () => {
             console.log('[nuxt-icon-manager] Icon added')
-            regenerateSprite()
+            debouncedRegenerate()
           })
           .on('unlink', async () => {
             console.log('[nuxt-icon-manager] Icon removed')
-            regenerateSprite()
+            debouncedRegenerate()
           })
           .on('change', async () => {
             console.log('[nuxt-icon-manager] Icon changed')
-            regenerateSprite()
+            debouncedRegenerate()
           })
         nuxt.hook('close', () => watcher.close())
       }
