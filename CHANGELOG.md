@@ -1,6 +1,20 @@
 # Changelog
 
 
+## v1.0.2
+
+[compare changes](https://github.com/daisigu/nuxt-icon-manager/compare/v1.0.1...v1.0.2)
+
+### 💅 Refactors
+
+- Update README.md ([a0f6061](https://github.com/daisigu/nuxt-icon-manager/commit/a0f6061))
+- Update playground package name ([ca314c3](https://github.com/daisigu/nuxt-icon-manager/commit/ca314c3))
+- Playground app example ([331c1c9](https://github.com/daisigu/nuxt-icon-manager/commit/331c1c9))
+
+### ❤️ Contributors
+
+- Богдан Гоголь <bogd2288@gmail.com>
+
 ## v1.0.1
 
 
