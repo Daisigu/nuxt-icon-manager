@@ -3,7 +3,6 @@ import * as fs from 'node:fs'
 import { addTemplate, addTypeTemplate } from '@nuxt/kit'
 import type { Nuxt } from '@nuxt/schema'
 import type { IconMetadata, IconModuleOptions } from './types'
-import { validateSVG } from './utils/validation'
 
 export async function generateSprite(nuxt: Nuxt, options: IconModuleOptions) {
   const iconsPath = path.resolve(nuxt.options.srcDir, options.iconsDir)
@@ -21,14 +20,6 @@ export async function generateSprite(nuxt: Nuxt, options: IconModuleOptions) {
         await findSVGFiles(fullPath)
       }
       else if (entry.isFile() && entry.name.endsWith('.svg')) {
-        if (options.validation?.enabled) {
-          const validation = await validateSVG(fullPath, options.validation.rules)
-          if (!validation.valid) {
-            console.error(`[nuxt-icon-manager] Validation failed for ${fullPath}:`, validation.errors)
-            continue
-          }
-        }
-
         const relativePath = path.relative(iconsPath, fullPath)
         const group = path.dirname(relativePath) !== '.' ? path.dirname(relativePath) : undefined
         const name = path.basename(entry.name, '.svg')
