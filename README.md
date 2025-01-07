@@ -1,84 +1,98 @@
-<!--
-Get your module up and running quickly.
+# Nuxt Icon Manager 🎨
 
-Find and replace all on all files (CMD+SHIFT+F):
-- Name: My Module
-- Package name: my-module
-- Description: My new Nuxt module
--->
+A Nuxt.js module to manage and generate an SVG sprite from your icons. It automatically processes SVG files from a
+specified directory and generates a single SVG sprite file that can be used across your project. Additionally, it
+includes TypeScript support to manage icon names and types. 🚀
 
-# My Module
+## Features ✨
 
-[![npm version][npm-version-src]][npm-version-href]
-[![npm downloads][npm-downloads-src]][npm-downloads-href]
-[![License][license-src]][license-href]
-[![Nuxt][nuxt-src]][nuxt-href]
+- Automatically generates an SVG sprite from a set of SVG files. 🖼️
+- TypeScript support for icon name types. 💻
+- Supports SVG validation with configurable rules. ✅
+- Easy integration into Nuxt.js projects. ⚡
+- Lightweight and fast, ideal for optimizing SVG usage in Nuxt apps. ⚙️
 
-My new Nuxt module for doing amazing things.
+## Installation 🛠️
 
-- [✨ &nbsp;Release Notes](/CHANGELOG.md)
-<!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/my-module?file=playground%2Fapp.vue) -->
-<!-- - [📖 &nbsp;Documentation](https://example.com) -->
+### 1. Install the module
 
-## Features
-
-<!-- Highlight some of the features your module provide here -->
-- ⛰ &nbsp;Foo
-- 🚠 &nbsp;Bar
-- 🌲 &nbsp;Baz
-
-## Quick Setup
-
-Install the module to your Nuxt application with one command:
+Add the `nuxt-icon-manager` module to your Nuxt 3 project using npm, yarn, or pnpm:
 
 ```bash
-npx nuxi module add my-module
+# Using npm
+npm install nuxt-icon-manager
+
+# Using yarn
+yarn add nuxt-icon-manager
+
+# Using pnpm
+pnpm add nuxt-icon-manager
 ```
 
-That's it! You can now use My Module in your Nuxt app ✨
+### 2. Add the module to your nuxt.config.ts file
 
+```typescript
+export default defineNuxtConfig({
+  modules: [
+    'nuxt-icon-manager',
+  ],
+  iconManager: {
+    iconsDir: 'assets/icons',  // Directory with your SVG icons (assets/icons by default)
+    componentName: 'VIcon' // Name of Icon component (VIcon by default)
+  },
+})
+```
 
-## Contribution
+## Usage 🎨
 
-<details>
-  <summary>Local development</summary>
-  
-  ```bash
-  # Install dependencies
-  npm install
-  
-  # Generate type stubs
-  npm run dev:prepare
-  
-  # Develop with the playground
-  npm run dev
-  
-  # Build the playground
-  npm run dev:build
-  
-  # Run ESLint
-  npm run lint
-  
-  # Run Vitest
-  npm run test
-  npm run test:watch
-  
-  # Release new version
-  npm run release
-  ```
+After the module is installed and configured, you can start using the generated SVG sprite and TypeScript types in your
+project.
 
-</details>
+### Using Icons with the Icon Component
 
+You can use the Icon component to render SVG icons. It accepts the name props. 
 
-<!-- Badges -->
-[npm-version-src]: https://img.shields.io/npm/v/my-module/latest.svg?style=flat&colorA=020420&colorB=00DC82
-[npm-version-href]: https://npmjs.com/package/my-module
+```vue
+<VIcon name="chevron-right" />
+<VIcon name="socials-telegram" />
+```
+### Accessing Types
 
-[npm-downloads-src]: https://img.shields.io/npm/dm/my-module.svg?style=flat&colorA=020420&colorB=00DC82
-[npm-downloads-href]: https://npm.chart.dev/my-module
+```typescript
+import { IconNames } from '#icons'
 
-[license-src]: https://img.shields.io/npm/l/my-module.svg?style=flat&colorA=020420&colorB=00DC82
-[license-href]: https://npmjs.com/package/my-module
+const iconName: IconNames = 'chevron-right' // Type-safe usage of icon names
 
-[nuxt-src]: https://img.shields.io/badge/Nuxt-020420?logo=nuxt.js
-[nuxt-href]: https://nuxt.com
+```
+
+### Folder Structure 📁
+
+You can organize your SVG icons in a nested folder structure. The module will automatically use the folder names as part of the icon name.
+
+#### Example Structure:
+
+```markdown
+assets/icons/
+  ├── socials/
+  │    ├── tg.svg
+  │    └── fb.svg
+  └── ui/
+       ├── arrow.svg
+       └── check.svg
+```
+#### Generated Icon names:
+```vue
+<VIcon name="socials-tg" />
+<VIcon name="socials-fb" />
+<VIcon name="ui-arrow" />
+<VIcon name="ui-check" />
+```
+
+#### Manual use
+
+You can use SVG icons manually by referencing them via the `<use>` element in your templates:
+
+```html
+<svg>
+  <use href="#icon-socials-tg"></use>
+</svg>
