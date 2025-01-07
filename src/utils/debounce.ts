@@ -1,7 +1,12 @@
-export const debounce = (func: CallableFunction, delay: number) => {
-  let timeout: NodeJS.Timeout
-  return (...args: never[]) => {
-    clearTimeout(timeout)
-    timeout = setTimeout(() => func(...args), delay)
+export function debounce<Params extends never[]>(
+  func: (...args: Params) => unknown,
+  timeout: number,
+): (...args: Params) => void {
+  let timer: NodeJS.Timeout
+  return (...args: Params) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      func(...args)
+    }, timeout)
   }
 }
