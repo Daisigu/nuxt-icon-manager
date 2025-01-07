@@ -1,4 +1,4 @@
-import path from 'node:path'
+import * as path from 'node:path'
 import * as fs from 'node:fs'
 import {
   createResolver,
@@ -27,7 +27,7 @@ export default defineNuxtModule<IconModuleOptions>({
       const { resolve } = createResolver(import.meta.url)
       const runtimeDir = resolve('./runtime')
 
-      validateStructure(resolve(nuxt.options.rootDir, options.iconsDir))
+      await validateStructure(resolve(nuxt.options.rootDir, options.iconsDir))
       await generateIconsContent(nuxt, options)
 
       nuxt.options.alias['#icons'] = resolve(nuxt.options.buildDir, 'nuxt-icon-manager/icons')
@@ -84,7 +84,7 @@ export default defineNuxtModule<IconModuleOptions>({
       }
     }
     catch (error: unknown) {
-      console.error('[nuxt-icon-manager]', error instanceof Error ? error.message : 'An unknown error occurred')
+      console.warn('[nuxt-icon-manager]', error instanceof Error ? error.message : 'An unknown error occurred')
     }
   },
 })
