@@ -1,19 +1,17 @@
 import fs from 'node:fs'
-import path from 'node:path'
+import { findSVGFiles } from './find-svg-files'
 
-// Validate assets structure
-export function validateStructure(iconsPath: string) {
+export async function validateStructure(iconsPath: string) {
   if (fs.existsSync(iconsPath)) {
-    const files = fs.readdirSync(iconsPath)
+    try {
+      const icons = await findSVGFiles(iconsPath)
 
-    // Filter not svg files
-    const svgFiles = files.filter(file => path.extname(file).toLowerCase() === '.svg')
-
-    if (svgFiles.length > 0) {
-      console.log(`[nuxt-icon-manager] Found ${svgFiles.length} SVG files in ${iconsPath}. Proceeding with sprite generation.`)
+      if (icons.length > 0) {
+        console.log(`[nuxt-icon-manager] Found ${icons.length} SVG files in ${iconsPath}. Proceeding with sprite generation.`)
+      }
     }
-    else {
-      throw new Error(`[nuxt-icon-manager] No SVG files found in ${iconsPath}. Skipping sprite generation.`)
+    catch (error) {
+      throw new Error(`[nuxt-icon-manager] Error while scanning ${iconsPath}: ${error instanceof Error ? error.message : error}`)
     }
   }
   else {
