@@ -11,11 +11,7 @@ export function generateSpriteContent(icons: IconMetadata[]): string {
       .replace(/<svg[^>]*>/g, '')
       .replace(/<\/svg>/g, '')
 
-    const iconId = icon.group
-      ? `${icon.group}-${icon.name}`
-      : icon.name
-
-    return `<symbol id="icon-${iconId}" viewBox="${icon.viewBox}">${svgData}</symbol>`
+    return `<symbol id="icon-${icon.name}" viewBox="${icon.viewBox}">${svgData}</symbol>`
   }).join('\n')
 
   return `${header}${symbols}${footer}`
