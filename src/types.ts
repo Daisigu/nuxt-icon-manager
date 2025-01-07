@@ -6,5 +6,6 @@ export interface IconMetadata {
   name: string
   group?: string
   viewBox: string
+  content: string
   path: string
 }
