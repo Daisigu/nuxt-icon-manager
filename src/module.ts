@@ -8,8 +8,8 @@ import {
 } from '@nuxt/kit'
 import chokidar from 'chokidar'
 import type { IconModuleOptions } from './types'
-import { validateStructure } from './validate-structure'
-import { generateSprite } from './generate-sprite'
+import { validateStructure } from './core/structure/validate'
+import { generateIconsContent } from './generate-icons-content'
 import { debounce } from './utils/debounce'
 
 export default defineNuxtModule<IconModuleOptions>({
@@ -28,7 +28,7 @@ export default defineNuxtModule<IconModuleOptions>({
       const runtimeDir = resolve('./runtime')
 
       validateStructure(resolve(nuxt.options.rootDir, options.iconsDir))
-      const { regenerate } = await generateSprite(nuxt, options)
+      await generateIconsContent(nuxt, options)
 
       nuxt.options.alias['#icons'] = resolve(nuxt.options.buildDir, 'nuxt-icon-manager/icons')
       nuxt.options.build.transpile.push(runtimeDir)
@@ -66,7 +66,7 @@ export default defineNuxtModule<IconModuleOptions>({
           persistent: true,
           ignoreInitial: true,
         })
-        const debouncedRegenerate = debounce(regenerate, 300)
+        const debouncedRegenerate = debounce(() => generateIconsContent(nuxt, options), 300)
         watcher
           .on('add', async () => {
             console.log('[nuxt-icon-manager] Icon added')
