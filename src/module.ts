@@ -15,7 +15,7 @@ import { debounce } from './utils/debounce'
 export default defineNuxtModule<IconModuleOptions>({
   meta: {
     name: 'nuxt-icon-manager',
-    configKey: 'iconModule',
+    configKey: 'iconManager',
     version: '1.0.0',
   },
   defaults: {
